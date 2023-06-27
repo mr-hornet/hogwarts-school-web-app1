@@ -5,51 +5,55 @@ import org.springframework.util.StringUtils;
 import ru.hogwarts.school.exception.EntityNotFoundException;
 import ru.hogwarts.school.exception.IncorrectArgumentException;
 import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.repositories.FacultyRepository;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
 
-    private final HashMap<Long, Faculty> faculties = new HashMap<>();
-    private static Long idCounter = 1L;
+    private final FacultyRepository facultyRepository;
+
+    public FacultyServiceImpl(FacultyRepository facultyRepository) {
+        this.facultyRepository = facultyRepository;
+    }
+
 
     @Override
     public Faculty add(Faculty faculty) {
-        return faculties.put(idCounter++, faculty);
+        return facultyRepository.save(faculty);
     }
 
     @Override
     public Faculty remove(Long id) {
-        if (faculties.containsKey(id)) {
-            return faculties.remove(id);
-        }
-        throw new EntityNotFoundException();
+        Faculty faculty = getById(id);
+        facultyRepository.deleteById(id);
+        return faculty;
     }
 
     @Override
     public Faculty update(Faculty faculty) {
-        if (faculties.containsKey(faculty.getId())) {
-            return faculties.put(faculty.getId(), faculty);
-        }
-        throw new EntityNotFoundException();
+        Faculty findFaculty = getById(faculty.getId());
+        facultyRepository.save(faculty);
+        return findFaculty;
     }
 
     @Override
     public Collection<Faculty> getAll() {
-        return faculties.values();
+        return facultyRepository.findAll();
     }
 
     @Override
     public Faculty getById(Long id) {
-        if (faculties.containsKey(id)) {
-            return faculties.get(id);
+        Optional<Faculty> faculty = facultyRepository.findById(id);
+        if (faculty.isPresent()) {
+            return faculty.get();
+        } else {
+            throw new EntityNotFoundException();
         }
-        throw new EntityNotFoundException();
     }
 
     @Override
@@ -57,7 +61,7 @@ public class FacultyServiceImpl implements FacultyService {
         if (!StringUtils.hasText(color)) {
             throw new IncorrectArgumentException();
         }
-        return faculties.values().stream()
+        return getAll().stream()
                 .filter(e -> e.getColor().equals(color))
                 .collect(Collectors.toList());
     }
