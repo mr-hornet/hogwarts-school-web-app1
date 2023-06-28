@@ -1,9 +1,10 @@
 package ru.hogwarts.school.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import javax.persistence.*;
 import java.util.Objects;
 @Entity (name = "students")
 public class Student {
@@ -13,6 +14,11 @@ public class Student {
     private String name;
     private Integer age;
 
+    @ManyToOne
+    @JoinColumn (name = "faculty_id")
+    @JsonBackReference
+    private Faculty faculty;
+
     public Student() {
     }
 
@@ -20,6 +26,13 @@ public class Student {
         this.id = id;
         this.name = name;
         this.age = age;
+    }
+
+    public Student(Long id, String name, Integer age, Faculty faculty) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.faculty = faculty;
     }
 
     public Long getId() {
@@ -44,6 +57,14 @@ public class Student {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
     }
 
     @Override
