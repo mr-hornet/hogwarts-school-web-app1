@@ -11,5 +11,5 @@ public interface StudentService {
     Student update(Student student);
     Collection<Student> getAll();
     Student getById(Long id);
-    Collection<Student> getByAge(Integer age);
+    Collection<Student> getByAge(Integer firstAge, Integer secondAge);
 }

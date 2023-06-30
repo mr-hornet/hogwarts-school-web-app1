@@ -57,12 +57,10 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public Collection<Faculty> getByColor(String color) {
-        if (!StringUtils.hasText(color)) {
+    public Collection<Faculty> getByNameOrColor(String name, String color) {
+        if (!StringUtils.hasText(name) && !StringUtils.hasText(color)) {
             throw new IncorrectArgumentException();
         }
-        return getAll().stream()
-                .filter(e -> e.getColor().equals(color))
-                .collect(Collectors.toList());
+        return facultyRepository.findFacultiesByNameIgnoreCaseOrColorIgnoreCase(name, color);
     }
 }
