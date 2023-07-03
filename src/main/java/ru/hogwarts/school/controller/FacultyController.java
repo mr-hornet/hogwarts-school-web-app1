@@ -47,7 +47,7 @@ public class FacultyController {
         return ResponseEntity.ok(facultyService.getById(id));
     }
 
-    @GetMapping()
+    @GetMapping("all")
     @Operation(summary = "Получение всех факультетов")
     public ResponseEntity<Collection<Faculty>> getAll() {
         return ResponseEntity.ok(facultyService.getAll());
