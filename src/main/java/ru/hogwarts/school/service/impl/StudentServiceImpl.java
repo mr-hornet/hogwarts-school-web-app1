@@ -9,6 +9,7 @@ import ru.hogwarts.school.repositories.StudentRepository;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -62,5 +63,20 @@ public class StudentServiceImpl implements StudentService {
             throw new IncorrectArgumentException();
         }
         return studentRepository.findStudentsByAgeBetween(firstAge, secondAge);
+    }
+
+    @Override
+    public Integer getCount() {
+        return studentRepository.getCount();
+    }
+
+    @Override
+    public Float getAverageAge() {
+        return studentRepository.getAverageAge();
+    }
+
+    @Override
+    public List<Student> getLastFiveStudents() {
+        return studentRepository.getLastFiveStudents();
     }
 }

@@ -45,7 +45,7 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getById(id));
     }
 
-    @GetMapping()
+    @GetMapping("all")
     @Operation(summary = "Получение всех студентов")
     public ResponseEntity<Collection<Student>> getAll() {
         return ResponseEntity.ok(studentService.getAll());
@@ -63,5 +63,25 @@ public class StudentController {
         Faculty faculty = studentService.getById(studentId).getFaculty();
         return ResponseEntity.ok(faculty);
     }
+
+    @GetMapping("count")
+    @Operation(summary = "Получение колличества студентов")
+    public ResponseEntity<Integer> getStudentsCount() {
+        return ResponseEntity.ok(studentService.getCount());
+    }
+
+    @GetMapping("age/average")
+    @Operation(summary = "Получение среднего возраста студентов")
+    public ResponseEntity<Float> getStudentsAverageAge() {
+        return ResponseEntity.ok(studentService.getAverageAge());
+    }
+
+    @GetMapping("last")
+    @Operation(summary = "Получение 5-ти последних студентов")
+    public ResponseEntity<Collection<Student>> getLastFiveStudents() {
+        return ResponseEntity.ok(studentService.getLastFiveStudents());
+    }
+
+
 
 }
