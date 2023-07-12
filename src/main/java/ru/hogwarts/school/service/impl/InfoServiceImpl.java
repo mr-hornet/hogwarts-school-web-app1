@@ -10,6 +10,6 @@ public class InfoServiceImpl implements InfoService {
 
     @Override
     public String getPort() {
-        return null;
+        return port;
     }
 }
