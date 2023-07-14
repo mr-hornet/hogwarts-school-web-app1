@@ -96,6 +96,18 @@ public class StudentController {
         return ResponseEntity.ok(averageAge);
     }
 
+    @GetMapping("print-students-name")
+    @Operation(summary = "Получение всех студентов")
+    public ResponseEntity<Void> printStudents() {
+        studentService.printStudents();
+        return ResponseEntity.ok().build();
+    }
 
+    @GetMapping("print-students-name-sync")
+    @Operation(summary = "Получение всех студентов (sync)")
+    public ResponseEntity<Void> printStudentsSync() {
+        studentService.printStudentsSync();
+        return ResponseEntity.ok().build();
+    }
 
 }

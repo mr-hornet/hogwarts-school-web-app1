@@ -125,4 +125,40 @@ public class StudentServiceImpl implements StudentService {
                 .average()
                 .orElse(0.0);
     }
+
+    @Override
+    public void printStudents() {
+        List<Student> students = studentRepository.findAll();
+        if (students.size() >= 6) {
+            students.subList(0, 2).forEach(this::printStudentName);
+            printStudentsInNewThread(students.subList(2, 4));
+            printStudentsInNewThread(students.subList(4, 6));
+        }
+    }
+
+    @Override
+    public void printStudentsSync() {
+        List<Student> students = studentRepository.findAll();
+        if (students.size() >= 6) {
+            students.subList(0, 2).forEach(this::printStudentName);
+            printStudentsInNewThreadSync(students.subList(2, 4));
+            printStudentsInNewThreadSync(students.subList(4, 6));
+        }
+    }
+
+    private void printStudentName(Student student) {
+        logger.info("Student, id = " + student.getId() + ", name = " + student.getName());
+    }
+
+    private synchronized void printStudentNameSync(Student student) {
+        logger.info("Student, id = " + student.getId() + ", name = " + student.getName());
+    }
+
+    private void printStudentsInNewThread(List<Student> students) {
+        new Thread(() -> students.forEach(this::printStudentName)).start();
+    }
+
+    private void printStudentsInNewThreadSync(List<Student> students) {
+        new Thread(() -> students.forEach(this::printStudentNameSync)).start();
+    }
 }
