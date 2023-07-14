@@ -82,6 +82,20 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getLastFiveStudents());
     }
 
+    @GetMapping("names-by-a")
+    @Operation(summary = "Получение имен студентов на букву А")
+    public ResponseEntity<Collection<String>> getNamesByA() {
+        List<String> namesByA = studentService.getNamesByA();
+        return ResponseEntity.ok(namesByA);
+    }
+
+    @GetMapping("age/average-stream")
+    @Operation(summary = "Получение среднего возраста студентов (stream)")
+    public ResponseEntity<Double> getAverageAgeByStream() {
+        Double averageAge = studentService.getAverageAgeByStream();
+        return ResponseEntity.ok(averageAge);
+    }
+
 
 
 }
